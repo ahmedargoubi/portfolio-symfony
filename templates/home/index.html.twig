@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Portfolio{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Bienvenue sur mon Portfolio</h1>
+        <p class="lead">Découvrez mes projets et réalisations</p>
+        <hr class="my-4">
+        
+        {% if app.user %}
+            <div class="alert alert-success">
+                <p>Bonjour <strong>{{ app.user.firstName }} {{ app.user.lastName }}</strong> !</p>
+            </div>
+            
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_dashboard') }}" class="btn btn-primary btn-lg">Espace Admin</a>
+            {% endif %}
+            
+            <a href="{{ path('app_logout') }}" class="btn btn-secondary btn-lg">Déconnexion</a>
+        {% else %}
+            <p>Connectez-vous pour accéder à toutes les fonctionnalités</p>
+            <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg">S'inscrire</a>
+            <a href="{{ path('app_login') }}" class="btn btn-secondary btn-lg">Se connecter</a>
+        {% endif %}
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h2 class="text-center">Mes Projets</h2>
+            <p class="text-center text-muted">Les projets seront affichés ici prochainement...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

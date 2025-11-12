@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">Tableau de bord Administrateur</h1>
+    
+    <div class="alert alert-info">
+        <strong>Bienvenue {{ app.user.firstName }} {{ app.user.lastName }} !</strong><br>
+        Vous êtes connecté en tant qu'administrateur.
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-folder"></i> Projets
+                    </h5>
+                    <p class="card-text">Gérer les projets du portfolio</p>
+                    <a href="#" class="btn btn-light">Gérer les projets</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-people"></i> Utilisateurs
+                    </h5>
+                    <p class="card-text">Gérer les utilisateurs</p>
+                    <a href="#" class="btn btn-light">Gérer les utilisateurs</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-graph-up"></i> Statistiques
+                    </h5>
+                    <p class="card-text">Voir les statistiques</p>
+                    <a href="#" class="btn btn-light">Voir les stats</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
