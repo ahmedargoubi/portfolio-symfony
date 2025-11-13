@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Projet{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1><i class="bi bi-plus-circle"></i> Créer un nouveau projet</h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            {{ include('project/_form.html.twig', {'button_label': 'Créer le projet'}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

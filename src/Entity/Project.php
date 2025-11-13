@@ -17,8 +17,11 @@ class Project
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $technologies = null;
@@ -27,14 +30,20 @@ class Project
     private ?string $url = null;
 
     #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
     private ?bool $isPublished = null;
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->isPublished = false;
+    }
 
     public function getId(): ?int
     {
@@ -49,7 +58,6 @@ class Project
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -58,10 +66,20 @@ class Project
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(string $description): static
     {
         $this->description = $description;
+        return $this;
+    }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
         return $this;
     }
 
@@ -73,7 +91,6 @@ class Project
     public function setTechnologies(?string $technologies): static
     {
         $this->technologies = $technologies;
-
         return $this;
     }
 
@@ -85,31 +102,6 @@ class Project
     public function setUrl(?string $url): static
     {
         $this->url = $url;
-
-        return $this;
-    }
-
-    public function isPublished(): ?bool
-    {
-        return $this->isPublished;
-    }
-
-    public function setIsPublished(bool $isPublished): static
-    {
-        $this->isPublished = $isPublished;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): static
-    {
-        $this->author = $author;
-
         return $this;
     }
 
@@ -121,7 +113,28 @@ class Project
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
 
+    public function isPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): static
+    {
+        $this->isPublished = $isPublished;
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
         return $this;
     }
 }
