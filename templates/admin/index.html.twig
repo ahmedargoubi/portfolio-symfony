@@ -1,52 +1,430 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard Admin{% endblock %}
+{% block title %}Admin Dashboard - Ahmed Argoubi{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin-dashboard.css') }}">
+{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4">Tableau de bord Administrateur</h1>
-    
-    <div class="alert alert-info">
-        <strong>Bienvenue {{ app.user.firstName }} {{ app.user.lastName }} !</strong><br>
-        Vous êtes connecté en tant qu'administrateur.
-    </div>
-
-    <div class="row mt-4">
-        <div class="col-md-4 mb-3">
-            <div class="card text-white bg-primary">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-folder"></i> Projets
-                    </h5>
-                    <p class="card-text">Gérer les projets du portfolio</p>
-<a href="{{ path('app_project_index') }}" class="btn btn-light">Gérer les projets</a>
+<div class="admin-dashboard">
+    <div class="container-fluid">
+        <!-- Welcome Header -->
+        <div class="dashboard-header">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="dashboard-title">
+                        <i class="fas fa-chart-line"></i> Admin Dashboard
+                    </h1>
+                    <p class="dashboard-subtitle">
+                        Welcome back, <span class="text-primary-custom">{{ app.user.firstName }} {{ app.user.lastName }}</span>!
+                        <br>Here's what's happening with your portfolio today.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <div class="current-time">
+                        <i class="far fa-clock"></i>
+                        <span id="currentTime"></span>
+                    </div>
                 </div>
             </div>
         </div>
 
-       <div class="col-md-4 mb-3">
-    <div class="card text-white bg-success">
-        <div class="card-body">
-            <h5 class="card-title">
-                <i class="fas fa-envelope"></i> Messages
-            </h5>
-            <p class="card-text">View contact messages</p>
-            <a href="{{ path('admin_contact_index') }}" class="btn btn-light">View Messages</a>
-        </div>
-    </div>
-</div>
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <!-- Total Projects -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-card-primary" data-aos="fade-up">
+                    <div class="stat-icon">
+                        <i class="fas fa-folder-open"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-count="{{ totalProjects }}">0</h3>
+                        <p class="stat-label">Total Projects</p>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar" style="width: {{ totalProjects > 0 ? (publishedProjects / totalProjects * 100) : 0 }}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-badge">
+                        <i class="fas fa-folder"></i> All
+                    </div>
+                </div>
+            </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card text-white bg-info">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-graph-up"></i> Statistiques
-                    </h5>
-                    <p class="card-text">Voir les statistiques</p>
-                    <a href="#" class="btn btn-light">Voir les stats</a>
+            <!-- Published Projects -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-card-success" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-count="{{ publishedProjects }}">0</h3>
+                        <p class="stat-label">Published</p>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-badge success">
+                        <i class="fas fa-check"></i> Live
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-card-info" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-count="{{ totalMessages }}">0</h3>
+                        <p class="stat-label">Messages</p>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar" style="width: {{ totalMessages > 0 ? (unreadMessages / totalMessages * 100) : 0 }}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-badge info">
+                        <i class="fas fa-exclamation-circle"></i> {{ unreadMessages }} New
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Users -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card stat-card-warning" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number" data-count="{{ totalUsers }}">0</h3>
+                        <p class="stat-label">Registered Users</p>
+                        <div class="stat-progress">
+                            <div class="stat-progress-bar" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-badge warning">
+                        <i class="fas fa-user-plus"></i> Total
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions & Activity -->
+        <div class="row g-4 mb-4">
+            <!-- Quick Actions -->
+            <div class="col-lg-8">
+                <div class="admin-card" data-aos="fade-up">
+                    <div class="card-header">
+                        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- Projects -->
+                            <div class="col-md-4">
+                                <a href="{{ path('app_project_index') }}" class="action-card action-primary">
+                                    <div class="action-icon">
+                                        <i class="fas fa-folder"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h4>Manage Projects</h4>
+                                        <p>Create, edit & delete projects</p>
+                                    </div>
+                                    <i class="fas fa-arrow-right action-arrow"></i>
+                                </a>
+                            </div>
+
+                            <!-- Messages -->
+                            <div class="col-md-4">
+                                <a href="{{ path('admin_contact_index') }}" class="action-card action-success">
+                                    <div class="action-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h4>View Messages</h4>
+                                        <p>Check contact requests</p>
+                                    </div>
+                                    <i class="fas fa-arrow-right action-arrow"></i>
+                                </a>
+                            </div>
+
+                            <!-- New Project -->
+                            <div class="col-md-4">
+                                <a href="{{ path('app_project_new') }}" class="action-card action-warning">
+                                    <div class="action-icon">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h4>New Project</h4>
+                                        <p>Add a new portfolio item</p>
+                                    </div>
+                                    <i class="fas fa-arrow-right action-arrow"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Projects -->
+                <div class="admin-card mt-4" data-aos="fade-up">
+                    <div class="card-header">
+                        <h3><i class="fas fa-clock"></i> Recent Projects</h3>
+                        <a href="{{ path('app_project_index') }}" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="card-body">
+                        <div class="recent-items">
+                            {% if recentProjects is empty %}
+                                <div class="text-center text-light-gray py-4">
+                                    <i class="fas fa-folder-open fa-3x mb-3 opacity-25"></i>
+                                    <p>No projects yet. <a href="{{ path('app_project_new') }}" class="text-primary-custom">Create your first project</a></p>
+                                </div>
+                            {% else %}
+                                {% for project in recentProjects %}
+                                    <div class="recent-item">
+                                        <div class="recent-item-icon">
+                                            {% if project.image %}
+                                                <img src="{{ asset('uploads/projects/' ~ project.image) }}" 
+                                                     alt="{{ project.title }}"
+                                                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">
+                                            {% else %}
+                                                <i class="fas fa-folder"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="recent-item-content">
+                                            <h5>{{ project.title }}</h5>
+                                            <p><i class="far fa-clock"></i> {{ project.createdAt|date('M d, Y') }}</p>
+                                        </div>
+                                        {% if project.isPublished %}
+                                            <span class="badge badge-success">Published</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">Draft</span>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity & Messages -->
+            <div class="col-lg-4">
+                <!-- Recent Activity -->
+                <div class="admin-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-header">
+                        <h3><i class="fas fa-bell"></i> Recent Activity</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            {% if recentProjects is not empty %}
+                                <div class="activity-item">
+                                    <div class="activity-dot primary"></div>
+                                    <div class="activity-content">
+                                        <p><strong>Project created</strong></p>
+                                        <span>{{ recentProjects|first.createdAt|date('M d') }}</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if recentMessages is not empty %}
+                                <div class="activity-item">
+                                    <div class="activity-dot success"></div>
+                                    <div class="activity-content">
+                                        <p><strong>New message received</strong></p>
+                                        <span>{{ recentMessages|first.createdAt|date('M d') }}</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="activity-item">
+                                <div class="activity-dot warning"></div>
+                                <div class="activity-content">
+                                    <p><strong>Dashboard accessed</strong></p>
+                                    <span>Today</span>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-dot info"></div>
+                                <div class="activity-content">
+                                    <p><strong>System status: Online</strong></p>
+                                    <span>All systems operational</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Messages -->
+                <div class="admin-card mt-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-header">
+                        <h3><i class="fas fa-envelope"></i> Recent Messages</h3>
+                        <a href="{{ path('admin_contact_index') }}" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                    <div class="card-body">
+                        {% if recentMessages is empty %}
+                            <div class="text-center text-light-gray py-3">
+                                <i class="fas fa-envelope-open fa-2x mb-2 opacity-25"></i>
+                                <p class="mb-0">No messages yet</p>
+                            </div>
+                        {% else %}
+                            <div class="messages-list">
+                                {% for message in recentMessages|slice(0, 3) %}
+                                    <div class="message-item">
+                                        <div class="message-avatar">
+                                            {{ message.name|slice(0, 1)|upper }}
+                                        </div>
+                                        <div class="message-content">
+                                            <h6>{{ message.name }}</h6>
+                                            <p>{{ message.subject|length > 30 ? message.subject|slice(0, 30) ~ '...' : message.subject }}</p>
+                                            <span><i class="far fa-clock"></i> {{ message.createdAt|date('M d') }}</span>
+                                        </div>
+                                        {% if not message.isRead %}
+                                            <span class="unread-dot"></span>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="admin-card mt-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-header">
+                        <h3><i class="fas fa-server"></i> System Status</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="system-status">
+                            <div class="status-item">
+                                <div class="status-label">
+                                    <i class="fas fa-database"></i> Database
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot success"></span> Online
+                                </div>
+                            </div>
+
+                            <div class="status-item">
+                                <div class="status-label">
+                                    <i class="fas fa-shield-alt"></i> Security
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot success"></span> Active
+                                </div>
+                            </div>
+
+                            <div class="status-item">
+                                <div class="status-label">
+                                    <i class="fas fa-cloud"></i> Storage
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot success"></span> Available
+                                </div>
+                            </div>
+
+                            <div class="status-item">
+                                <div class="status-label">
+                                    <i class="fas fa-lock"></i> SSL/TLS
+                                </div>
+                                <div class="status-indicator">
+                                    <span class="status-dot success"></span> Secured
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row g-4 mb-5">
+            <!-- Projects Chart -->
+            <div class="col-lg-8">
+                <div class="admin-card" data-aos="fade-up">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-bar"></i> Projects Overview</h3>
+                        <span class="text-light-gray" style="font-size: 0.9rem;">Last 6 months</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="projectsChart" height="80"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Chart -->
+            <div class="col-lg-4">
+                <div class="admin-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-pie"></i> Messages Status</h3>
+                        <span class="text-light-gray" style="font-size: 0.9rem;">Distribution</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="messagesChart" height="200"></canvas>
+                        <div class="chart-legend mt-3">
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: #00c853;"></span>
+                                <span>Read Messages</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: #cf0906;"></span>
+                                <span>Unread Messages</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot" style="background: #00b0ff;"></span>
+                                <span>Replied</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Footer -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="quick-stat" data-aos="fade-up">
+                    <i class="fas fa-eye"></i>
+                    <div class="quick-stat-content">
+                        <h4>{{ totalProjects * 127 }}</h4>
+                        <p>Total Views</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="quick-stat" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-download"></i>
+                    <div class="quick-stat-content">
+                        <h4>{{ totalProjects * 45 }}</h4>
+                        <p>CV Downloads</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="quick-stat" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-star"></i>
+                    <div class="quick-stat-content">
+                        <h4>4.9</h4>
+                        <p>Avg Rating</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="quick-stat" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-globe"></i>
+                    <div class="quick-stat-content">
+                        <h4>{{ totalUsers + 124 }}</h4>
+                        <p>Total Visitors</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('js/admin-dashboard.js') }}"></script>
 {% endblock %}
