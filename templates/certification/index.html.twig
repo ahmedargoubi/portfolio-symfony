@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Certifications{% endblock %}
+
+{% block body %}
+<div class="container mt-5 pt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-certificate"></i> My Certifications</h1>
+        <div>
+            <a href="{{ path('app_certification_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Add Certification
+            </a>
+            <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>{{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
+    {% if certifications is empty %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> No certifications yet. 
+            <a href="{{ path('app_certification_new') }}">Add your first certification</a>!
+        </div>
+    {% else %}
+        <div class="row g-4">
+            {% for certification in certifications %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="cert-card">
+                        {% if certification.image %}
+                            <div class="cert-image">
+                                <img src="{{ asset('uploads/certifications/' ~ certification.image) }}" 
+                                     alt="{{ certification.name }}">
+                            </div>
+                        {% else %}
+                            <div class="cert-image-placeholder">
+                                <i class="fas fa-certificate fa-3x"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="cert-body">
+                            <h5 class="cert-title">{{ certification.name }}</h5>
+                            <p class="cert-issuer">
+                                <i class="fas fa-building"></i> {{ certification.issuer }}
+                            </p>
+                            
+                            {% if certification.issueDate %}
+                                <p class="cert-date">
+                                    <i class="far fa-calendar"></i> {{ certification.issueDate|date('M Y') }}
+                                </p>
+                            {% endif %}
+                            
+                            <div class="cert-status">
+                                {% if certification.isActive %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                                <span class="badge bg-info">Order: {{ certification.displayOrder }}</span>
+                            </div>
+                            
+                            <div class="cert-actions">
+                                <a href="{{ path('app_certification_show', {'id': certification.id}) }}" 
+                                   class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ path('app_certification_edit', {'id': certification.id}) }}" 
+                                   class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form method="post" 
+                                      action="{{ path('app_certification_delete', {'id': certification.id}) }}" 
+                                      style="display: inline-block;"
+                                      onsubmit="return confirm('Delete this certification?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ certification.id) }}">
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.cert-card {
+    background: var(--bg-card);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s;
+}
+
+.cert-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(207, 9, 6, 0.3);
+}
+
+.cert-image, .cert-image-placeholder {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-dark);
+}
+
+.cert-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+}
+
+.cert-image-placeholder {
+    color: var(--primary);
+}
+
+.cert-body {
+    padding: 1.5rem;
+}
+
+.cert-title {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.cert-issuer, .cert-date {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.cert-issuer i, .cert-date i {
+    color: var(--primary);
+    margin-right: 0.5rem;
+}
+
+.cert-status {
+    margin: 1rem 0;
+}
+
+.cert-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+</style>
+{% endblock %}
