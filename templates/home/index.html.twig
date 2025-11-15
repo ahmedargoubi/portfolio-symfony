@@ -1,36 +1,360 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - Portfolio{% endblock %}
+{% block title %}Ahmed Argoubi - Security Engineer Portfolio{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="text-center">
-        <h1 class="display-4">Bienvenue sur mon Portfolio</h1>
-        <p class="lead">Découvrez mes projets et réalisations</p>
-        <hr class="my-4">
-        
-        {% if app.user %}
-            <div class="alert alert-success">
-                <p>Bonjour <strong>{{ app.user.firstName }} {{ app.user.lastName }}</strong> !</p>
+
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Left Side - Content -->
+            <div class="col-lg-6 hero-content" data-aos="fade-right">
+                <h3>Hello, It's Me</h3>
+                <h1>Ahmed Argoubi</h1>
+                <h2>And I'm a <span>Security Engineer</span></h2>
+                <p class="hero-description">
+                    Dedicated Security Engineer focused on identifying vulnerabilities and 
+                    implementing robust security measures. I combine technical expertise with 
+                    a proactive approach to protect systems and ensure data integrity.
+                </p>
+                
+                <!-- Social Icons -->
+                <div class="social-icons">
+                    <a href="https://github.com/ahmedargoubi" target="_blank" class="social-icon" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ahmed-argoubi-773808299/" target="_blank" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="mailto:ahmedargoubi28@gmail.com" class="social-icon" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+                
+                <!-- Download CV Button -->
+                <a href="#" class="btn-primary-custom">
+                    <span><i class="fas fa-download"></i> Download CV</span>
+                </a>
             </div>
             
-            {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('admin_dashboard') }}" class="btn btn-primary btn-lg">Espace Admin</a>
-            {% endif %}
-            
-            <a href="{{ path('app_logout') }}" class="btn btn-secondary btn-lg">Déconnexion</a>
-        {% else %}
-            <p>Connectez-vous pour accéder à toutes les fonctionnalités</p>
-            <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg">S'inscrire</a>
-            <a href="{{ path('app_login') }}" class="btn btn-secondary btn-lg">Se connecter</a>
-        {% endif %}
-    </div>
-
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <h2 class="text-center">Mes Projets</h2>
-            <p class="text-center text-muted">Les projets seront affichés ici prochainement...</p>
+            <!-- Right Side - Image -->
+            <div class="col-lg-6 hero-image" data-aos="fade-left">
+                <div class="hexagon-glow"></div>
+                <div class="hexagon-image">
+                    <img src="{{ asset('images/ahmed.png') }}" alt="Ahmed Argoubi">
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- About Section -->
+<section class="section" id="about">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>About <span class="text-primary-custom">Me</span></h2>
+            <p>Get to know more about my background and expertise</p>
+        </div>
+        
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="about-image">
+                    <img src="{{ asset('images/ahmed.png') }}" alt="About Ahmed" class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+            
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="about-content">
+                    <h3 class="mb-4">Security Engineer & Cybersecurity Specialist</h3>
+                    <p class="text-muted mb-3">
+                        I'm passionate about cybersecurity and protecting digital assets. With expertise 
+                        in penetration testing, vulnerability assessment, and secure application development, 
+                        I help organizations strengthen their security posture.
+                    </p>
+                    <p class="text-muted mb-4">
+                        My approach combines technical knowledge with continuous learning to stay ahead 
+                        of emerging threats. I believe in proactive security measures and building 
+                        resilient systems that can withstand modern cyber attacks.
+                    </p>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <i class="fas fa-user text-primary-custom me-2"></i>
+                                <strong>Name:</strong> Ahmed Argoubi
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <i class="fas fa-envelope text-primary-custom me-2"></i>
+                                <strong>Email:</strong> ahmedargoubi28@gmail.com
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <i class="fas fa-briefcase text-primary-custom me-2"></i>
+                                <strong>Role:</strong> Security Engineer
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <i class="fas fa-code text-primary-custom me-2"></i>
+                                <strong>Specialization:</strong> Cybersecurity
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section class="section bg-dark-custom" id="skills">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>My <span class="text-primary-custom">Skills</span></h2>
+            <p>Technologies and tools I work with</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Security Skills -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="skill-card project-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt fa-3x text-primary-custom mb-3"></i>
+                        <h4>Security & Penetration Testing</h4>
+                        <p class="text-muted">OWASP, Burp Suite, Metasploit, Nmap, Wireshark</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Programming -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="skill-card project-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-code fa-3x text-primary-custom mb-3"></i>
+                        <h4>Programming Languages</h4>
+                        <p class="text-muted">Python, PHP, JavaScript, SQL, Bash</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Web Development -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="skill-card project-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-laptop-code fa-3x text-primary-custom mb-3"></i>
+                        <h4>Web Development</h4>
+                        <p class="text-muted">Symfony, HTML5, CSS3, Bootstrap, MySQL</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Network Security -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="skill-card project-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-network-wired fa-3x text-primary-custom mb-3"></i>
+                        <h4>Network Security</h4>
+                        <p class="text-muted">Firewall Configuration, IDS/IPS, VPN, Network Analysis</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vulnerability Assessment -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="skill-card project-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-bug fa-3x text-primary-custom mb-3"></i>
+                        <h4>Vulnerability Assessment</h4>
+                        <p class="text-muted">Security Audits, Risk Analysis, Compliance Testing</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tools & Frameworks -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="skill-card project-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-tools fa-3x text-primary-custom mb-3"></i>
+                        <h4>Security Tools</h4>
+                        <p class="text-muted">Kali Linux, Docker, Git, SQLMap, Hydra</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section -->
+<section class="section" id="portfolio">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>My <span class="text-primary-custom">Portfolio</span></h2>
+            <p>Check out my recent security projects and research</p>
+        </div>
+        
+        {% if app.user %}
+            <!-- Projects visible for logged users -->
+            <div class="row g-4">
+                <!-- Example: We'll populate this dynamically later -->
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="project-card">
+                        <img src="https://via.placeholder.com/400x250?text=Security+Project" alt="Project">
+                        <div class="card-body">
+                            <h5 class="card-title">Security Audit Tool</h5>
+                            <p class="card-text">Automated security auditing system for web applications</p>
+                            <div class="mb-3">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Security</span>
+                                <span class="tech-badge">OWASP</span>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-danger">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-card">
+                        <img src="https://via.placeholder.com/400x250?text=Penetration+Testing" alt="Project">
+                        <div class="card-body">
+                            <h5 class="card-title">Network Scanner</h5>
+                            <p class="card-text">Advanced network vulnerability scanner and analyzer</p>
+                            <div class="mb-3">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Nmap</span>
+                                <span class="tech-badge">Network</span>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-danger">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="project-card">
+                        <img src="https://via.placeholder.com/400x250?text=Web+Security" alt="Project">
+                        <div class="card-body">
+                            <h5 class="card-title">Secure Portfolio System</h5>
+                            <p class="card-text">This portfolio with advanced security features</p>
+                            <div class="mb-3">
+                                <span class="tech-badge">Symfony</span>
+                                <span class="tech-badge">PHP</span>
+                                <span class="tech-badge">MySQL</span>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-danger">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <!-- Message for non-logged users -->
+            <div class="text-center" data-aos="fade-up">
+                <div class="alert alert-info d-inline-block">
+                    <i class="fas fa-lock me-2"></i>
+                    Please <a href="{{ path('app_login') }}" class="alert-link">login</a> or 
+                    <a href="{{ path('app_register') }}" class="alert-link">register</a> to view all projects
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Contact Section -->
+<!-- Contact Section -->
+<section class="section bg-dark-custom" id="contact">
+    <div class="container">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Get In <span class="text-primary-custom">Touch</span></h2>
+            <p>Feel free to contact me for any security consultation or collaboration</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <!-- Flash Messages -->
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+                
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+
+                <div class="contact-form">
+                    {{ form_start(contactForm) }}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                {{ form_widget(contactForm.name) }}
+                                {{ form_errors(contactForm.name) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_widget(contactForm.email) }}
+                                {{ form_errors(contactForm.email) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_widget(contactForm.subject) }}
+                                {{ form_errors(contactForm.subject) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_widget(contactForm.message) }}
+                                {{ form_errors(contactForm.message) }}
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn-primary-custom">
+                                    <span><i class="fas fa-paper-plane"></i> Send Message</span>
+                                </button>
+                            </div>
+                        </div>
+                    {{ form_end(contactForm) }}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="row mt-5 text-center">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="contact-info-item">
+                    <i class="fas fa-envelope fa-2x text-primary-custom mb-3"></i>
+                    <h5>Email</h5>
+                    <p class="text-light-gray">ahmedargoubi28@gmail.com</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="contact-info-item">
+                    <i class="fab fa-github fa-2x text-primary-custom mb-3"></i>
+                    <h5>GitHub</h5>
+                    <p class="text-light-gray">ahmedargoubi</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="contact-info-item">
+                    <i class="fab fa-linkedin fa-2x text-primary-custom mb-3"></i>
+                    <h5>LinkedIn</h5>
+                    <p class="text-light-gray">ahmed-argoubi</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block javascripts %}
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+    });
+</script>
 {% endblock %}

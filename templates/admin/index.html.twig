@@ -19,22 +19,22 @@
                         <i class="bi bi-folder"></i> Projets
                     </h5>
                     <p class="card-text">Gérer les projets du portfolio</p>
-                    <a href="#" class="btn btn-light">Gérer les projets</a>
+<a href="{{ path('app_project_index') }}" class="btn btn-light">Gérer les projets</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 mb-3">
-            <div class="card text-white bg-success">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <i class="bi bi-people"></i> Utilisateurs
-                    </h5>
-                    <p class="card-text">Gérer les utilisateurs</p>
-                    <a href="#" class="btn btn-light">Gérer les utilisateurs</a>
-                </div>
-            </div>
+       <div class="col-md-4 mb-3">
+    <div class="card text-white bg-success">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fas fa-envelope"></i> Messages
+            </h5>
+            <p class="card-text">View contact messages</p>
+            <a href="{{ path('admin_contact_index') }}" class="btn btn-light">View Messages</a>
         </div>
+    </div>
+</div>
 
         <div class="col-md-4 mb-3">
             <div class="card text-white bg-info">
