@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Contact
 {
     #[ORM\Id]
@@ -15,22 +17,40 @@ class Contact
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 100)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
     private ?string $subject = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10, max: 5000)]
     private ?string $message = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?bool $isRead = null;
+    private ?bool $isRead = false;
+
+    // 🔒 NOUVEAU: Adresse IP pour tracer les abus
+    #[ORM\Column(length: 45, nullable: true)]
+    private ?string $ipAddress = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->isRead = false;
+    }
 
     public function getId(): ?int
     {
@@ -45,7 +65,6 @@ class Contact
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -57,7 +76,6 @@ class Contact
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -69,7 +87,6 @@ class Contact
     public function setSubject(string $subject): static
     {
         $this->subject = $subject;
-
         return $this;
     }
 
@@ -81,7 +98,6 @@ class Contact
     public function setMessage(string $message): static
     {
         $this->message = $message;
-
         return $this;
     }
 
@@ -93,7 +109,6 @@ class Contact
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -105,12 +120,17 @@ class Contact
     public function setIsRead(bool $isRead): static
     {
         $this->isRead = $isRead;
-
         return $this;
     }
-    public function __construct()
-{
-    $this->createdAt = new \DateTimeImmutable();
-    $this->isRead = false;
-}
+
+    public function getIpAddress(): ?string
+    {
+        return $this->ipAddress;
+    }
+
+    public function setIpAddress(?string $ipAddress): static
+    {
+        $this->ipAddress = $ipAddress;
+        return $this;
+    }
 }

@@ -26,10 +26,20 @@ security:
             logout:
                 path: app_logout
                 target: app_home
+                invalidate_session: true       # Détruire la session
+                
+            # ✅ REMEMBER ME SÉCURISÉ
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 604800
+                lifetime: 604800               # 1 semaine (en secondes)
                 path: /
+                always_remember_me: false
+                
+            # ✅ PROTECTION CONTRE BRUTE FORCE
+            login_throttling:
+                max_attempts: 5                # 5 tentatives maximum
+                interval: '15 minutes'         # Dans une période de 15 minutes
+
 
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }

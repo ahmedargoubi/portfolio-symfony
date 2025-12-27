@@ -188,114 +188,59 @@
     </div>
 </section>
 
-<!-- Certifications Section -->
-<section class="section" id="certifications">
+<section class="section bg-dark-custom" id="certifications">
     <div class="container">
         <div class="section-title" data-aos="fade-up">
-            <h2>My <span class="text-primary-custom">Certifications</span></h2>
-            <p>Professional certifications in cybersecurity and IT infrastructure</p>
+            <h2>Professional <span class="text-primary-custom">Certifications</span></h2>
+            <p>Validated expertise in cybersecurity, system administration, and networking</p>
         </div>
         
         <div class="row g-4">
-            <!-- RHCSA -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="certification-card">
-                    <div class="cert-badge">
-                        <div class="cert-icon redhat">
-                            <i class="fas fa-server"></i>
+            {% for certification in certifications %}
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                    <div class="certification-card-new">
+                        <div class="cert-badge-container">
+                            <div class="cert-badge-image">
+                                {% if certification.image %}
+                                    <img src="{{ asset('uploads/certifications/' ~ certification.image) }}" alt="{{ certification.name }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/150?text={{ certification.name }}" alt="{{ certification.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="cert-badge-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="cert-content">
-                        <h4>RHCSA</h4>
-                        <p class="cert-org">Red Hat</p>
-                        <p class="cert-desc">Red Hat Certified System Administrator</p>
-                        <div class="cert-skills">
-                            <span class="skill-tag">Linux</span>
-                            <span class="skill-tag">System Admin</span>
+                        
+                        <div class="cert-body-new">
+                            <div class="cert-title-section">
+                                <h3 class="cert-name">{{ certification.name }}</h3>
+                                <span class="cert-issuer-badge">
+                                    <i class="fas fa-building"></i> {{ certification.issuer }}
+                                </span>
+                            </div>
+                            
+                            <p class="cert-description-text">
+                                {{ certification.description }}
+                            </p>
+                            
+                            <div class="cert-footer-new">
+                                {% if certification.issueDate %}
+                                    <span class="cert-status">
+                                        <i class="fas fa-calendar"></i> {{ certification.issueDate|date('M Y') }}
+                                    </span>
+                                {% endif %}
+                                
+                                {% if certification.credentialUrl %}
+                                    <a href="{{ certification.credentialUrl }}" target="_blank" class="btn-verify">
+                                        <i class="fas fa-shield-alt"></i> Verify
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
-                    </div>
-                    <div class="cert-verify">
-                        <a href="#" class="verify-link">
-                            <i class="fas fa-check-circle"></i> Verify
-                        </a>
                     </div>
                 </div>
-            </div>
-
-            <!-- RHCE -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="certification-card">
-                    <div class="cert-badge">
-                        <div class="cert-icon redhat">
-                            <i class="fas fa-cogs"></i>
-                        </div>
-                    </div>
-                    <div class="cert-content">
-                        <h4>RHCE</h4>
-                        <p class="cert-org">Red Hat</p>
-                        <p class="cert-desc">Red Hat Certified Engineer</p>
-                        <div class="cert-skills">
-                            <span class="skill-tag">Automation</span>
-                            <span class="skill-tag">Ansible</span>
-                        </div>
-                    </div>
-                    <div class="cert-verify">
-                        <a href="#" class="verify-link">
-                            <i class="fas fa-check-circle"></i> Verify
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- eJPT -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="certification-card">
-                    <div class="cert-badge">
-                        <div class="cert-icon ejpt">
-                            <i class="fas fa-user-secret"></i>
-                        </div>
-                    </div>
-                    <div class="cert-content">
-                        <h4>eJPT</h4>
-                        <p class="cert-org">eLearnSecurity</p>
-                        <p class="cert-desc">Junior Penetration Tester</p>
-                        <div class="cert-skills">
-                            <span class="skill-tag">Pentesting</span>
-                            <span class="skill-tag">Security</span>
-                        </div>
-                    </div>
-                    <div class="cert-verify">
-                        <a href="#" class="verify-link">
-                            <i class="fas fa-check-circle"></i> Verify
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CCNA -->
-            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
-                <div class="certification-card">
-                    <div class="cert-badge">
-                        <div class="cert-icon cisco">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                    </div>
-                    <div class="cert-content">
-                        <h4>CCNA</h4>
-                        <p class="cert-org">Cisco</p>
-                        <p class="cert-desc">Cisco Certified Network Associate</p>
-                        <div class="cert-skills">
-                            <span class="skill-tag">Networking</span>
-                            <span class="skill-tag">Routing</span>
-                        </div>
-                    </div>
-                    <div class="cert-verify">
-                        <a href="#" class="verify-link">
-                            <i class="fas fa-check-circle"></i> Verify
-                        </a>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -307,65 +252,44 @@
             <p>Check out my recent security projects and research</p>
         </div>
         
-        {% if app.user %}
-            <!-- Projects visible for logged users -->
+        {% if projects|length > 0 %}
             <div class="row g-4">
-                <!-- Example: We'll populate this dynamically later -->
-                <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/400x250?text=Security+Project" alt="Project">
-                        <div class="card-body">
-                            <h5 class="card-title">Security Audit Tool</h5>
-                            <p class="card-text">Automated security auditing system for web applications</p>
-                            <div class="mb-3">
-                                <span class="tech-badge">Python</span>
-                                <span class="tech-badge">Security</span>
-                                <span class="tech-badge">OWASP</span>
+                {% for project in projects %}
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                        <div class="project-card">
+                            {% if project.image %}
+                                <img src="{{ asset('uploads/projects/' ~ project.image) }}" alt="{{ project.title }}">
+                            {% else %}
+                                <img src="https://via.placeholder.com/400x250?text={{ project.title|url_encode }}" alt="{{ project.title }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ project.title }}</h5>
+                                <p class="card-text">{{ project.description|length > 100 ? project.description|slice(0, 100) ~ '...' : project.description }}</p>
+                                
+                                {% if project.technologies %}
+                                    <div class="mb-3">
+                                        {% set techs = project.technologies|split(',') %}
+                                        {% for tech in techs|slice(0, 3) %}
+                                            <span class="tech-badge">{{ tech|trim }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                                {% if project.url %}
+                                    <a href="{{ project.url }}" target="_blank" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-external-link-alt"></i> View Project
+                                    </a>
+                                {% endif %}
                             </div>
-                            <a href="#" class="btn btn-sm btn-outline-danger">View Details</a>
                         </div>
                     </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/400x250?text=Penetration+Testing" alt="Project">
-                        <div class="card-body">
-                            <h5 class="card-title">Network Scanner</h5>
-                            <p class="card-text">Advanced network vulnerability scanner and analyzer</p>
-                            <div class="mb-3">
-                                <span class="tech-badge">Python</span>
-                                <span class="tech-badge">Nmap</span>
-                                <span class="tech-badge">Network</span>
-                            </div>
-                            <a href="#" class="btn btn-sm btn-outline-danger">View Details</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-                    <div class="project-card">
-                        <img src="https://via.placeholder.com/400x250?text=Web+Security" alt="Project">
-                        <div class="card-body">
-                            <h5 class="card-title">Secure Portfolio System</h5>
-                            <p class="card-text">This portfolio with advanced security features</p>
-                            <div class="mb-3">
-                                <span class="tech-badge">Symfony</span>
-                                <span class="tech-badge">PHP</span>
-                                <span class="tech-badge">MySQL</span>
-                            </div>
-                            <a href="#" class="btn btn-sm btn-outline-danger">View Details</a>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         {% else %}
-            <!-- Message for non-logged users -->
             <div class="text-center" data-aos="fade-up">
                 <div class="alert alert-info d-inline-block">
-                    <i class="fas fa-lock me-2"></i>
-                    Please <a href="{{ path('app_login') }}" class="alert-link">login</a> or 
-                    <a href="{{ path('app_register') }}" class="alert-link">register</a> to view all projects
+                    <i class="fas fa-info-circle me-2"></i>
+                    No projects available at the moment. Check back soon!
                 </div>
             </div>
         {% endif %}

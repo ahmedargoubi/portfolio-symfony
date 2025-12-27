@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>Login - Ahmed Argoubi</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -63,7 +64,12 @@
                             </div>
                         {% endfor %}
 
-                        <form method="post">
+                        {# ⚠️ IMPORTANT: Action explicite pour le formulaire #}
+                        <form method="post" action="{{ path('app_login') }}">
+                            
+                            {# ✅ TOKEN CSRF - PROTECTION ANTI-CSRF #}
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
                             <!-- Email Field -->
                             <div class="input-group-custom">
                                 <i class="fas fa-envelope input-icon"></i>
@@ -73,7 +79,8 @@
                                        value="{{ last_username }}"
                                        placeholder="Email"
                                        required 
-                                       autofocus>
+                                       autofocus
+                                       autocomplete="email">
                             </div>
 
                             <!-- Password Field -->
@@ -83,10 +90,9 @@
                                        name="password" 
                                        id="inputPassword"
                                        placeholder="Password"
-                                       required>
+                                       required
+                                       autocomplete="current-password">
                             </div>
-
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                             <!-- Remember Me -->
                             <div class="form-options">

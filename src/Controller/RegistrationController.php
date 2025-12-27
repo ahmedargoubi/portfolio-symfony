@@ -20,6 +20,11 @@ class RegistrationController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
+        // 🔒 Si l'utilisateur est déjà connecté, rediriger
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -28,13 +33,19 @@ class RegistrationController extends AbstractController
             // Hash le mot de passe
             $plainPassword = $form->get('plainPassword')->getData();
             $user->setPassword($passwordHasher->hashPassword($user, $plainPassword));
+            
+            // 🔒 Définir le rôle par défaut
+            $user->setRoles(['ROLE_USER']);
+            
+            // 🔒 Désactiver le compte par défaut (optionnel - active si tu veux une validation email)
+            // $user->setIsVerified(false);
 
             // Sauvegarde en base de données
             $entityManager->persist($user);
             $entityManager->flush();
 
             // Message de succès
-            $this->addFlash('success', 'Votre compte a été créé avec succès ! Vous pouvez maintenant vous connecter.');
+            $this->addFlash('success', 'Your account has been created successfully! You can now log in.');
 
             return $this->redirectToRoute('app_login');
         }

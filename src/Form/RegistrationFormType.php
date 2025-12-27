@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
 
 class RegistrationFormType extends AbstractType
 {
@@ -21,29 +22,56 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'label' => 'Prénom',
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Votre prénom'],
+                'attr' => [
+                    'class' => 'form-control', 
+                    'placeholder' => 'First Name',
+                    'autocomplete' => 'given-name'
+                ],
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer votre prénom']),
+                    new Length([
+                        'min' => 2,
+                        'max' => 50,
+                        'minMessage' => 'Le prénom doit contenir au moins {{ limit }} caractères',
+                    ]),
                 ],
             ])
             ->add('lastName', TextType::class, [
                 'label' => 'Nom',
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Votre nom'],
+                'attr' => [
+                    'class' => 'form-control', 
+                    'placeholder' => 'Last Name',
+                    'autocomplete' => 'family-name'
+                ],
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer votre nom']),
+                    new Length([
+                        'min' => 2,
+                        'max' => 50,
+                        'minMessage' => 'Le nom doit contenir au moins {{ limit }} caractères',
+                    ]),
                 ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
-                'attr' => ['class' => 'form-control', 'placeholder' => 'votre@email.com'],
+                'attr' => [
+                    'class' => 'form-control', 
+                    'placeholder' => 'Email',
+                    'autocomplete' => 'email'
+                ],
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer votre email']),
+                    new Email(['message' => 'L\'email {{ value }} n\'est pas valide']),
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'mapped' => false,
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Minimum 6 caractères'],
+                'attr' => [
+                    'class' => 'form-control', 
+                    'placeholder' => 'Password (min. 6 characters)',
+                    'autocomplete' => 'new-password'
+                ],
                 'constraints' => [
                     new NotBlank(['message' => 'Veuillez entrer un mot de passe']),
                     new Length([
@@ -54,12 +82,14 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label' => 'J\'accepte les conditions d\'utilisation',
+                'label' => 'I accept the terms of use',
                 'mapped' => false,
+                'attr' => ['class' => 'form-check-input'],
                 'constraints' => [
                     new IsTrue(['message' => 'Vous devez accepter les conditions.']),
                 ],
             ])
+            // ⚠️ CAPTCHA DÉSACTIVÉ
         ;
     }
 
@@ -67,6 +97,9 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id' => 'register_item',
         ]);
     }
 }
